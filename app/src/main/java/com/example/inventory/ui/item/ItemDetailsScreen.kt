@@ -60,6 +60,7 @@ import com.example.inventory.R
 import com.example.inventory.data.Item
 import com.example.inventory.ui.navigation.NavigationDestination
 import com.example.inventory.ui.theme.InventoryTheme
+import kotlinx.coroutines.flow.StateFlow
 
 object ItemDetailsDestination : NavigationDestination {
     override val route = "item_details"
@@ -75,10 +76,9 @@ fun ItemDetailsScreen(
     navigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ItemDetailsViewModel = viewModel(factory = AppViewModelProvider.Factory)
+)
 
-
-) {
-
+{
     val uiState = viewModel.uiState.collectAsState()
 
     Scaffold(
@@ -104,10 +104,10 @@ fun ItemDetailsScreen(
         }, modifier = modifier
     ) { innerPadding ->
         ItemDetailsBody(
-            itemDetailsUiState = ItemDetailsUiState(),
+            itemDetailsUiState = uiState.value,
             onSellItem = { },
             onDelete = { },
-            modifier = Modifier
+            modifier = modifier.padding(innerPadding)
                 .padding(
                     start = innerPadding.calculateStartPadding(LocalLayoutDirection.current),
                     end = innerPadding.calculateEndPadding(LocalLayoutDirection.current),
